@@ -58,6 +58,11 @@ namespace SoNSClassLibrary
             {
                 _addForce += float.Parse(e.ToString());
             }
+
+            else
+            {
+                throw new NotImplementedException("Не реализовано!");
+            }
         }
 
         protected internal override async Task Activate()
