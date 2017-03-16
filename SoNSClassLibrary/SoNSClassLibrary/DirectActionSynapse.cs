@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 namespace SoNSClassLibrary
 {
     /// <summary>
-    /// 
+    /// <para>Представляет собой синапс прямого действия - сигнал передается вещественным числом, действие оказывается на сумматор (<see cref="Summator"/> ).</para>
+    /// <para>Положительное число - побудительное действие, отрицательное - ингибирующее (тормозящее) действие.</para>
     /// </summary>
-    public class DirectActionSynapse : Synapse<float>
+    public class SynapseDirect : Synapse<float>
     {
-        public DirectActionSynapse(float force, NeuroElement parent) : base(parent)
+        public SynapseDirect(float force, NeuroElement parent) : base(parent)
         {
             Par = force;
         }

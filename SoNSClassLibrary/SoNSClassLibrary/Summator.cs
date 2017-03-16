@@ -54,7 +54,9 @@ namespace SoNSClassLibrary
         /// </summary>
         protected override void SynapseOnSynapseActivated<T>(object sender, T e)
         {
-            if(sender.GetType().Equals(typeof(DirectActionSynapse)))
+            // определяем тип синапса, вызвавшего событие и реагируем/не реагируем.
+
+            if(sender.GetType().Equals(typeof(SynapseDirect)))
             {
                 _addForce += float.Parse(e.ToString());
             }
@@ -65,6 +67,10 @@ namespace SoNSClassLibrary
             }
         }
 
+        /// <summary>
+        /// Задача, выполняется при активации сумматора.
+        /// </summary>
+        /// <returns></returns>
         protected internal override async Task Activate()
         {
             await Task.Run(() =>

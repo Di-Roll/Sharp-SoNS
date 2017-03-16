@@ -23,7 +23,7 @@ namespace SonsTestApp
             var loop = new UpdateLoop(100);
 
             Summator sum1 = new Summator();
-            DirectActionSynapse daSynapse = new DirectActionSynapse(5, sum1);
+            SynapseDirect daSynapse = new SynapseDirect(5, sum1);
             Summator sum2 = new Summator();
             sum2.ConnectToSynapse(daSynapse);
 

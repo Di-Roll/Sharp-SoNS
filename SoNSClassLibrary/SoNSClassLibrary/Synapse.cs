@@ -45,8 +45,6 @@ namespace SoNSClassLibrary
         /// </summary>
         private void ActivatedByNeuronEvent()
         {
-            //SynapseActivated?.Invoke(Force);
-
             SynapseActivated?.Invoke(this, Par);
         }
     }
