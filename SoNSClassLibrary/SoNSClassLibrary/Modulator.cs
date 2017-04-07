@@ -1,4 +1,6 @@
-﻿using System;
+﻿// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -273,9 +275,20 @@ namespace SoNSClassLibrary
             }
 
             // синапс модулирующего действия
+            // сумма основной части порога с дополнительной не должна быть отрицательной - это приводит к спонтанной активации.
             else if (sender.GetType() == typeof(SynapseDirect))
             {
-                ModulatingSynapseForce += float.Parse(e.ToString());
+                var force = float.Parse(e.ToString());
+
+                if (ThresholdTop + ExtraThreshold + force < 0)
+                {
+                    ModulatingSynapseForce = -ThresholdTop;
+                }
+
+                else
+                {
+                    ModulatingSynapseForce += force;
+                }
             }
 
             else

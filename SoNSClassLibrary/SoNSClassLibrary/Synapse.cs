@@ -1,5 +1,8 @@
-﻿using System;
+﻿// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +19,63 @@ namespace SoNSClassLibrary
         /// </summary>
         public Guid Id { get; private set; }
 
+        #region Синаптическая задержка ( wip... )
+
+        /// <summary>
+        /// Определяет необходимо ли использовать задержку.
+        /// </summary>
+        public bool UseDelay { get; private set; }
+
+        private int _minDelay = 0;
+
+        /// <summary>
+        /// Минимальный интервал синаптической задержки, исчисляемый в миллисекундах.
+        /// </summary>
+        protected internal int MinDelay
+        {
+            get { return _minDelay; }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Значение должно быть больше либо равно нулю.");
+
+                _minDelay = value;
+            }
+        }
+
+        private int _defaultDelay = 0;
+
+        /// <summary>
+        /// Начальная величина синаптической задержки, исчисляемая в миллисекундах.
+        /// </summary>
+        protected internal int DefaultDelay
+        {
+            get { return _defaultDelay; }
+            set
+            {
+                if (value > MaxDelay)
+                {
+                    _defaultDelay = MaxDelay;
+                }
+
+                else if (value < MinDelay)
+                {
+                    _defaultDelay = MinDelay;
+                }
+
+                else
+                {
+                    _defaultDelay = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Максимальный интервал синаптической задержки, исчисляемый в миллисекундах.
+        /// </summary>
+        protected internal int MaxDelay { get; set; } = 500; 
+        #endregion
+
         /// <summary>
         /// Событие, возникающее при активации синапса.
         /// </summary>
@@ -31,8 +91,9 @@ namespace SoNSClassLibrary
         /// </summary>
         /// <param name="force">Сила воздействия синапса.</param>
         /// <param name="parent">Нейроэлемент (родитель) синапса.</param>
-        public Synapse(NeuroElement parent)
+        public Synapse(NeuroElement parent, bool useDelay)
         {
+            UseDelay = useDelay;
             Id = Guid.NewGuid();
 
             // не указает нейроэлемент-родитель синапса.
