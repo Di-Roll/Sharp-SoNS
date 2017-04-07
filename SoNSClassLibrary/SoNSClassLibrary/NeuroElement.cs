@@ -42,7 +42,7 @@ namespace SoNSClassLibrary
 
         /// <summary>
         /// Сумма внешних сигналов.
-        /// <remarks>Значение <see cref="Sum"/> не может превышать <see cref="MaxSumm"/> или быть меньше -<see cref="MaxSumm"/>.</remarks>
+        /// <remarks>Значение <see cref="Sum"/> не может превышать <see cref="MaxSum"/> или быть меньше -<see cref="MaxSum"/>.</remarks>
         /// </summary>
         [Description("Сумма внешних сигналов.")]
         public float Sum
@@ -50,14 +50,14 @@ namespace SoNSClassLibrary
             get { return _sum; }
             set
             {
-                if (value > MaxSumm)
+                if (value > MaxSum)
                 {
-                    _sum = MaxSumm;
+                    _sum = MaxSum;
                 }
 
-                else if (value < -MaxSumm)
+                else if (value < MinSum)
                 {
-                    _sum = -MaxSumm;
+                    _sum = MinSum;
                 }
 
                 else
@@ -86,21 +86,39 @@ namespace SoNSClassLibrary
             }
         }
 
-        private float _maxSumm = 30f;
+        private float _maxSum = 30f;
         
         /// <summary>
         /// Максимально допустимое значение сумматора.
         /// </summary>
         [Description("Максимально допустимое значение сумматора.")]
-        public float MaxSumm
+        public float MaxSum
         {
-            get { return _maxSumm; }
+            get { return _maxSum; }
             set
             {
                 if (value < 0)
                     throw new ArgumentException("Значение должно быть больше либо равно нулю.");
 
-                _maxSumm = value;
+                _maxSum = value;
+            }
+        }
+
+        private float _minSum = -30f;
+
+        /// <summary>
+        /// Минимально допустимое значение сумматора.
+        /// </summary>
+        [Description("Минимально допустимое значение сумматора.")]
+        public float MinSum
+        {
+            get { return _minSum; }
+            set
+            {
+                if (value > 0)
+                    throw new ArgumentException("Значение должно быть меньше либо равно нулю.");
+
+                _minSum = value;
             }
         }
 
@@ -118,7 +136,7 @@ namespace SoNSClassLibrary
         /// Нижний порог активации.
         /// </summary>
         [Description("Нижний порог активации.")]
-        public float ThresholdDown { get; set; } = -5.0f;
+        public float ThresholdDown { get; set; } = -5.0f;   // в настоящий момент не используется!
 
         #endregion
 
@@ -129,24 +147,26 @@ namespace SoNSClassLibrary
         /// <remarks><para>Возбуждение передается на синапс, который, в свою очередь, генерирует новое событие, передающееся на другой нейроэлемент, который подписан на событие генерируемое синапсом.</para>
         /// <para>neuroElement1=>synapse=>neuroElement2.</para></remarks>
         /// </summary>
-        public event Action NeuronActivatedEvent;
+        public event Action NeuroElementActivatedEvent;
 
         /// <summary>
         /// Вызывает событие, возникающее при активации нейроэлемента.
         /// </summary>
         protected void OnActivatedEvent()
         {
-            NeuronActivatedEvent?.Invoke();
+            NeuroElementActivatedEvent?.Invoke();
         }
 
         #endregion
 
         #region Синапс - событие/обработчик
 
+        protected internal object SynapseDirectForceLocker;
+
         /// <summary>
-        /// Сила воздействия синапса на нейроэлемент.
+        /// Сила воздействия синапса прямого действия на нейроэлемент.
         /// </summary>
-        protected float _addForce;
+        protected float SynapseDirectForce { get; set; }
 
         /// <summary>
         /// Подписывает нейроэлемент на событие, возникающее при передаче ему сигнала синапсом.
@@ -181,6 +201,7 @@ namespace SoNSClassLibrary
         protected NeuroElement()
         {
             Id = Guid.NewGuid();
+            SynapseDirectForceLocker = new object();
         }
     }
 }

@@ -19,10 +19,11 @@ namespace SoNSClassLibrary
         /// <summary>
         /// Событие, возникающее при активации синапса.
         /// </summary>
-        //protected internal event Action<float> SynapseActivated;
-
         protected internal event EventHandler<T> SynapseActivated;
 
+        /// <summary>
+        /// Параметр типа <see cref="T"/>, отвечает за передаваемое синапсом значение (сила воздействия).
+        /// </summary>
         public T Par { get; set; }
 
         /// <summary>
@@ -34,10 +35,12 @@ namespace SoNSClassLibrary
         {
             Id = Guid.NewGuid();
 
+            // не указает нейроэлемент-родитель синапса.
             if (parent == null)
                 throw new ArgumentException("Не указан родитель синапса.");
 
-            parent.NeuronActivatedEvent += ActivatedByNeuronEvent;
+            // подписываемся на событие активации нейроэлемента-родителя
+            parent.NeuroElementActivatedEvent += ActivatedByNeuronEvent;
         }
 
         /// <summary>
@@ -45,6 +48,8 @@ namespace SoNSClassLibrary
         /// </summary>
         private void ActivatedByNeuronEvent()
         {
+            // передаем параметр (сила воздействия) нейроэлементу-получателю, с которым связан синапс.
+            // [нейроэлемент-родитель]=>[синапс]=(Par)=>[нейроэлемент-получатель]
             SynapseActivated?.Invoke(this, Par);
         }
     }

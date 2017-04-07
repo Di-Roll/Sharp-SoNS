@@ -25,7 +25,7 @@ namespace SonsTestApp
             Summator sum1 = new Summator();
             SynapseDirect daSynapse = new SynapseDirect(5, sum1);
             Summator sum2 = new Summator();
-            sum2.ConnectToSynapse(daSynapse);
+            sum2.ConnectToSynapse(daSynapse);            
 
             loop.Enabled = true;
             sum1.Sum = 29;

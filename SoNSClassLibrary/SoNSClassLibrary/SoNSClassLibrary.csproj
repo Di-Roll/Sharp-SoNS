@@ -41,13 +41,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrainObject.cs" />
-    <Compile Include="DirectActionSynapse.cs" />
+    <Compile Include="SynapseDirect.cs" />
+    <Compile Include="Modulator.cs" />
     <Compile Include="NeuroElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Summator.cs" />
     <Compile Include="Synapse.cs" />
     <Compile Include="SynapseModulating.cs" />
     <Compile Include="UpdateLoop.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

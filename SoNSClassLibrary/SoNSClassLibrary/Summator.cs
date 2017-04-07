@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace SoNSClassLibrary
 {
+    /// <summary>
+    /// Сумматор.
+    /// </summary>
     public class Summator : NeuroElement
     {
         public Summator():base()
         {
-
+            
         }
 
         protected override async Task OnUpdate()
@@ -29,12 +32,8 @@ namespace SoNSClassLibrary
                         await ActivateRef;
                     }
                 }
-                else
-                {
-                    
-                }
 
-                // изменяем значения сумматора (демпфер)
+                #region демпфер сумматора
 
                 // если величина меньше либо равна величине демпфера - обнуляем
                 if (Math.Abs(Sum) <= SumDamfer) Sum = 0f;
@@ -42,10 +41,21 @@ namespace SoNSClassLibrary
                 if (Sum > SumDamfer) Sum -= SumDamfer;
                 // если величина меньше величины демпфера - отнимаем величинк демпфера
                 if (Sum < -SumDamfer) Sum += SumDamfer;
+                #endregion
 
-                // добавляем к сумматору сигналы, полученные от синапсов
-                Sum += _addForce;
-                _addForce = 0;
+                #region добавляем к сумматору сигналы, полученные от синапсов
+
+                if (SynapseDirectForce > 0)
+                {
+                    // т.к. величина SynapseDirectForce может измениться после увеличения Sum (нейроэлемент получит импульс от синапса), необходимо включить блокировку.
+                    // иначе SynapseDirectForce увеличит изменит значение и затем будет обнулен, иначе говоря мы потеряем величину постушившего сигнала.
+                    lock (SynapseDirectForceLocker)
+                    {
+                        Sum += SynapseDirectForce;
+                        SynapseDirectForce = 0;
+                    }
+                } 
+                #endregion
             });
         }
 
@@ -55,10 +65,9 @@ namespace SoNSClassLibrary
         protected override void SynapseOnSynapseActivated<T>(object sender, T e)
         {
             // определяем тип синапса, вызвавшего событие и реагируем/не реагируем.
-
-            if(sender.GetType().Equals(typeof(SynapseDirect)))
+            if (sender.GetType() == typeof(SynapseDirect))
             {
-                _addForce += float.Parse(e.ToString());
+                SynapseDirectForce += float.Parse(e.ToString());
             }
 
             else
