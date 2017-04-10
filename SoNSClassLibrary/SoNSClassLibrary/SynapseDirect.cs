@@ -14,7 +14,7 @@ namespace SoNSClassLibrary
     /// </summary>
     public class SynapseDirect : Synapse<float>
     {
-        public SynapseDirect(float force, NeuroElement parent) : base(parent)
+        public SynapseDirect(NeuroElement parent, bool useDelay, float force) : base(parent, useDelay)
         {
             Par = force;
         }

@@ -43,7 +43,7 @@ namespace SoNSClassLibrary
             }
         }
 
-        private int _defaultDelay = 0;
+        private int _defaultDelay = 5000;
 
         /// <summary>
         /// Начальная величина синаптической задержки, исчисляемая в миллисекундах.
@@ -73,7 +73,7 @@ namespace SoNSClassLibrary
         /// <summary>
         /// Максимальный интервал синаптической задержки, исчисляемый в миллисекундах.
         /// </summary>
-        protected internal int MaxDelay { get; set; } = 500; 
+        protected internal int MaxDelay { get; set; } = 5000; 
         #endregion
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace SoNSClassLibrary
         /// </summary>
         /// <param name="force">Сила воздействия синапса.</param>
         /// <param name="parent">Нейроэлемент (родитель) синапса.</param>
-        public Synapse(NeuroElement parent, bool useDelay)
+        protected Synapse(NeuroElement parent, bool useDelay)
         {
             UseDelay = useDelay;
             Id = Guid.NewGuid();
@@ -107,8 +107,16 @@ namespace SoNSClassLibrary
         /// <summary>
         /// Происходит при активации нейроэлемента (родителя).
         /// </summary>
-        private void ActivatedByNeuronEvent()
+        private async void ActivatedByNeuronEvent()
         {
+            // если необходимо использовать задержку
+            if(UseDelay)
+            {
+                await Task.Delay(DefaultDelay);
+            }
+
+            // РЕАЛИЗОВАТЬ УМЕНЬШЕНИЕ / УВЕЛИЧЕНИЕ ЗАДЕРЖКИ В ЗАВИСИМОСТИ ОТ ЧАСТОТЫ ВЫЗОВОВ И Т.Д.
+
             // передаем параметр (сила воздействия) нейроэлементу-получателю, с которым связан синапс.
             // [нейроэлемент-родитель]=>[синапс]=(Par)=>[нейроэлемент-получатель]
             SynapseActivated?.Invoke(this, Par);

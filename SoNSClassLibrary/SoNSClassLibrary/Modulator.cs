@@ -276,7 +276,7 @@ namespace SoNSClassLibrary
 
             // синапс модулирующего действия
             // сумма основной части порога с дополнительной не должна быть отрицательной - это приводит к спонтанной активации.
-            else if (sender.GetType() == typeof(SynapseDirect))
+            else if (sender.GetType() == typeof(SynapseModulating))
             {
                 var force = float.Parse(e.ToString());
 

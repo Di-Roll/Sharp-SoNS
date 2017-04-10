@@ -15,7 +15,7 @@ namespace SoNSClassLibrary
     /// </summary>
     public class SynapseModulating : Synapse<float>
     {
-        public SynapseModulating(float force, NeuroElement parent) : base(parent)
+        public SynapseModulating(NeuroElement parent, bool useDelay, float force) : base(parent, useDelay)
         {
             Par = force;
         }

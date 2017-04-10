@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrainObject.cs" />
+    <Compile Include="SynapseContact.cs" />
     <Compile Include="SynapseDirect.cs" />
     <Compile Include="Modulator.cs" />
     <Compile Include="NeuroElement.cs" />

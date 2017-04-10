@@ -71,6 +71,11 @@ namespace SoNSClassLibrary
             {
                 SynapseDirectForce += float.Parse(e.ToString());
             }
+            // синапс модулирующего действия
+            else if (sender.GetType() == typeof(SynapseModulating))
+            {
+                throw new ArgumentException("Сумматор не реагирует на синапс модулирующего действия, т.к. в нем отсутствует как соответствующий механизм так и дополнительный порог активации.");
+            }
 
             else
             {
